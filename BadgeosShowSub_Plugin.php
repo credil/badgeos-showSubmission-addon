@@ -95,6 +95,7 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 
         // Add Actions & Filters
         // http://plugin.michael-simpson.com/?page_id=37
+	add_filter('badgeos_render_achievement', array($this, 'addLinkToSubmission'), 1);
 
 
         // Adding scripts & styles to all pages
@@ -112,6 +113,22 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
         // http://plugin.michael-simpson.com/?page_id=41
 
     }
+
+
+    public function addLinkToSubmission($output, $achivementID, $mode) {
+	$displayedID = bp_displayed_user_id();
+
+	if(empty($displayedID)) {
+		return $output . 'No displayedID';
+	}
+
+	$htmlCommentMarker = '<!-- .badgeos-item-excerpt -->';
+
+	$divToAdd = '<div>' . 'Show details' . '</div>';
+
+	return str_replace($htmlCommentMarker, $htmlCommentMarker . $divToAdd, $output);
+    }
+
 
 
 }
