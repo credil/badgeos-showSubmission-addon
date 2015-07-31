@@ -129,7 +129,7 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 		 */
 		$args = array(
 				'author'			=> $displayedID,
-				'aachievement_id'	=> $achivementID,
+				'achievement_id'	=> $achivementID,
 				'post_type'    		=> 'submission',
 				'show_attachments'	=> true,	
 				'show_comments'		=> true,
@@ -147,7 +147,7 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 		
 		$linkURL = get_permalink($submissionID, false);
 		
-		$divToAdd = '<!-- BEGIN Show detail link --><div>' . '<a href="' . $linkURL . '">' . 'Show details</a></div><!-- END Show detail link -->';
+		$divToAdd = "<!-- BEGIN Show detail link for ach # $achivementID, author # $displayedID --><div>" . '<a href="' . $linkURL . '">' . 'Show details</a></div><!-- END Show detail link -->';
 
 		$htmlCommentMarker = '<!-- .badgeos-item-excerpt -->';
 		$strReturn = str_replace($htmlCommentMarker, $htmlCommentMarker . $divToAdd, $output);
