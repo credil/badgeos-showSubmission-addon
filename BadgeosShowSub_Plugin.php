@@ -95,8 +95,9 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 
         // Add Actions & Filters
         // http://plugin.michael-simpson.com/?page_id=37
-		add_filter('badgeos_render_achievement', array($this, 'addLinkToSubmission'), 1);
-
+		add_filter('badgeos_render_achievement', array($this, 'addLinkToSubmission'), 10, 3);
+		add_filter('badgeos_render_submission', array($this, 'addLinkToSubmission'), 10, 3);
+		
 
         // Adding scripts & styles to all pages
         // Examples:
@@ -119,14 +120,39 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 		$displayedID = bp_displayed_user_id();
 
 		if(empty($displayedID)) {
-			return $output . 'No displayedID';
+			return $output;
 		}
 
-		$htmlCommentMarker = '<!-- .badgeos-item-excerpt -->';
-	
-		$divToAdd = '<div>' . 'Show details' . '</div>';
+		/*
+		 * According to badgeos_parse_feedback_args
+		 * 'status'=> 'auto-approved' shows both approved & auto-approved
+		 */
+		$args = array(
+				'author'			=> $displayedID,
+				'aachievement_id'	=> $achivementID,
+				'post_type'    		=> 'submission',
+				'show_attachments'	=> true,	
+				'show_comments'		=> true,
+				'status'			=> 'auto-approved',
+				'numberposts'		=> 1,
+				'suppress_filters'	=> false,
+		);	
+		
+		$args = badgeos_parse_feedback_args($args);
 
-		return str_replace($htmlCommentMarker, $htmlCommentMarker . $divToAdd, $output);
+
+		$wpq 	= new WP_Query;
+		$posts	= $wpq->query($args);
+		$submissionID = $posts[0]->ID;
+		
+		$linkURL = get_permalink($submissionID, false);
+		
+		$divToAdd = '<!-- BEGIN Show detail link --><div>' . '<a href="' . $linkURL . '">' . 'Show details</a></div><!-- END Show detail link -->';
+
+		$htmlCommentMarker = '<!-- .badgeos-item-excerpt -->';
+		$strReturn = str_replace($htmlCommentMarker, $htmlCommentMarker . $divToAdd, $output);
+		
+		return $strReturn;
     }
 
 
