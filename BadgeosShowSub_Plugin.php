@@ -97,7 +97,7 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
         // http://plugin.michael-simpson.com/?page_id=37
 		add_filter('badgeos_render_achievement', array($this, 'addLinkToSubmission'), 10, 3);
 		#add_filter('badgeos_render_submission', array($this, 'addLinkToSubmission'), 10, 3);
-		
+		add_filter('bp_core_signup_send_validation_email_message', array($this, 'ajouterSalutationEtSignature'), 10, 3);
 
         // Adding scripts & styles to all pages
         // Examples:
@@ -115,6 +115,18 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 
     }
 
+    
+    public function ajouterSalutationEtSignature($message,    $user_id, $activate_url) {
+		$userName = '';
+    	
+    	if(!empty($user_id)) {
+    		$userName = get_user_name($user_id);
+    	}
+    	
+    	$signature = 
+    }
+    
+    
 
     public function addLinkToSubmission($output, $achivementID, $mode) {
 		$displayedID = bp_displayed_user_id();
