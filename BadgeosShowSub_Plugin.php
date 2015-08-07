@@ -123,9 +123,9 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
     		$diplayName = bp_core_get_user_displayname($user_id);
     	}
     	
-    	$signature = 'Administrateur Web'.'\n'.
+    	$signature = 'Administrateur Web'."\n".
 			'CADRE 21 - Centre d’animation, de développement et de '.
-			'recherche en éducation pour le 21e siècle'.'\n'.
+			'recherche en éducation pour le 21e siècle'."\n".
 			'http://www.cadre21.org';
     	
     	$message = "Bonjour $diplayName,\n\n" . $message . "\n\n" . $signature;
