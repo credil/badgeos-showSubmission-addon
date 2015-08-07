@@ -96,7 +96,7 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
         // Add Actions & Filters
         // http://plugin.michael-simpson.com/?page_id=37
 		add_filter('badgeos_render_achievement', array($this, 'addLinkToSubmission'), 10, 3);
-		add_filter('badgeos_render_submission', array($this, 'addLinkToSubmission'), 10, 3);
+		#add_filter('badgeos_render_submission', array($this, 'addLinkToSubmission'), 10, 3);
 		
 
         // Adding scripts & styles to all pages
