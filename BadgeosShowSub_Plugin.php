@@ -117,13 +117,20 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 
     
     public function ajouterSalutationEtSignature($message,    $user_id, $activate_url) {
-		$userName = '';
+		$diplayName = '';
     	
     	if(!empty($user_id)) {
-    		$userName = get_user_name($user_id);
+    		$diplayName = bp_core_get_user_displayname($user_id);
     	}
     	
-    	$signature = 
+    	$signature = 'Administrateur Web'.'\n'.
+			'CADRE 21 - Centre d’animation, de développement et de '.
+			'recherche en éducation pour le 21e siècle'.'\n'.
+			'http://www.cadre21.org';
+    	
+    	$message = "Bonjour $diplayName,\n\n" . $message . "\n\n" . $signature;
+    	
+    	return $message;
     }
     
     
