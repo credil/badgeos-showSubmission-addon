@@ -98,7 +98,7 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 		add_filter('badgeos_render_achievement', array($this, 'addLinkToSubmission'), 10, 3);
 		#add_filter('badgeos_render_submission', array($this, 'addLinkToSubmission'), 10, 3);
 		add_filter('bp_core_signup_send_validation_email_message', array($this, 'ajouterSalutationEtSignature'), 10, 3);
-
+		add_filter('the_content', array($this, 'removeBadgeThumbnail'), 11);
         // Adding scripts & styles to all pages
         // Examples:
         //        wp_enqueue_script('jquery');
@@ -113,6 +113,17 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
         // Register AJAX hooks
         // http://plugin.michael-simpson.com/?page_id=41
 
+    }
+    
+    
+    public function removeBadgeThumbnail($content) {
+    	$postType = get_post_type();
+    	
+    	if($postType == 'badges') {
+	    	$content = preg_replace('#<div class="alignleft badgeos-item-image">(.*?)</div>#', '', $content);
+    	}
+    		
+    	return $content;
     }
 
     
