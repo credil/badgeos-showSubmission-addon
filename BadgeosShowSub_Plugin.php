@@ -181,7 +181,7 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 		
 		$linkURL = get_permalink($submissionID, false);
 		
-		$divToAdd = "<!-- BEGIN Show detail link for ach # $achivementID, author # $displayedID, submission postID # $submissionID --><div>" . '<a href="' . $linkURL . '">' . 'Show details</a></div><!-- END Show detail link -->';
+		$divToAdd = "<!-- BEGIN Show detail link for ach # $achivementID, author # $displayedID, submission postID # $submissionID --><div>" . '<a href="' . $linkURL . '">' . translate('Show Details', 'badgeos') .'</a></div><!-- END Show detail link -->';
 
 		$htmlCommentMarker = '<!-- .badgeos-item-excerpt -->';
 		$strReturn = str_replace($htmlCommentMarker, $htmlCommentMarker . $divToAdd, $output);
