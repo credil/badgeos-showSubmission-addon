@@ -99,6 +99,7 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 		#add_filter('badgeos_render_submission', array($this, 'addLinkToSubmission'), 10, 3);
 		add_filter('bp_core_signup_send_validation_email_message', array($this, 'ajouterSalutationEtSignature'), 10, 3);
 		add_filter('the_content', array($this, 'removeBadgeThumbnail'), 11);
+		add_filter('badgeos_get_submission_attachments', array($this, 'swapWordAttachmentProof'), 11);
         // Adding scripts & styles to all pages
         // Examples:
         //        wp_enqueue_script('jquery');
@@ -123,6 +124,16 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 	    	$content = preg_replace('#<div class="alignleft badgeos-item-image">(.*?)</div>#', '', $content);
     	}
     		
+    	return $content;
+    }
+
+
+    public function swapWordAttachmentProof($content) {
+
+    	
+    	$content = str_replace('Submitted Attachments:', 'Submitted proofs:', $content);
+    	$content = str_replace('Pièces-Jointes Soumises :', ' Preuves soumises:', $content);
+    	 
     	return $content;
     }
 
