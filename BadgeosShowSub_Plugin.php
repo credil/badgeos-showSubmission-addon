@@ -115,47 +115,47 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
         // http://plugin.michael-simpson.com/?page_id=41
 
     }
-    
-    
+
+
     public function removeBadgeThumbnail($content) {
     	$postType = get_post_type();
-    	
+
     	if($postType == 'badges') {
 	    	$content = preg_replace('#<div class="alignleft badgeos-item-image">(.*?)</div>#', '', $content);
     	}
-    		
+
     	return $content;
     }
 
 
     public function swapWordAttachmentProof($content) {
 
-    	
+
     	$content = str_replace('Submitted Attachments:', 'Submitted proofs:', $content);
     	$content = str_replace('Pièces-Jointes Soumises :', ' Preuves soumises:', $content);
-    	 
+
     	return $content;
     }
 
-    
+
     public function ajouterSalutationEtSignature($message,    $user_id, $activate_url) {
 		$diplayName = '';
-    	
+
     	if(!empty($user_id)) {
     		$diplayName = bp_core_get_user_displayname($user_id);
     	}
-    	
+
     	$signature = 'Administrateur Web'."\n".
 			'CADRE 21 - Centre d’animation, de développement et de '.
 			'recherche en éducation pour le 21e siècle'."\n".
 			'http://www.cadre21.org';
-    	
+
     	$message = "Bonjour $diplayName,\n\n" . $message . "\n\n" . $signature;
-    	
+
     	return $message;
     }
-    
-    
+
+
 
     public function addLinkToSubmission($output, $achivementID, $mode) {
 		$displayedID = bp_displayed_user_id();
@@ -172,31 +172,31 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 				'author'			=> $displayedID,
 				'achievement_id'	=> $achivementID,
 				'post_type'    		=> 'submission',
-				'show_attachments'	=> true,	
+				'show_attachments'	=> true,
 				'show_comments'		=> true,
 				'status'			=> 'auto-approved',
 				'numberposts'		=> 1,
 				'suppress_filters'	=> false,
-		);	
-		
+		);
+
 		$args = badgeos_parse_feedback_args($args);
 
 
 		$wpq 	= new WP_Query;
 		$posts	= $wpq->query($args);
 		$submissionID = $posts[0]->ID;
-		
+
 		if(empty($submissionID)) {
 			return $output;
 		}
-		
+
 		$linkURL = get_permalink($submissionID, false);
-		
+
 		$divToAdd = "<!-- BEGIN Show detail link for ach # $achivementID, author # $displayedID, submission postID # $submissionID --><div>" . '<a href="' . $linkURL . '">' . translate('Show Details', 'badgeos') .'</a></div><!-- END Show detail link -->';
 
 		$htmlCommentMarker = '<!-- .badgeos-item-excerpt -->';
 		$strReturn = str_replace($htmlCommentMarker, $htmlCommentMarker . $divToAdd, $output);
-		
+
 		return $strReturn;
     }
 
