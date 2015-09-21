@@ -165,6 +165,33 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 		}
 
 		/*
+		 * Now we take care of removing the thumbnail as requested by client
+		 */
+		$doc = new DOMDocument();
+		#self::setErrorHandler();
+		$doc->loadHTML (mb_convert_encoding($output, 'HTML-ENTITIES', 'UTF-8'));
+		#self::setErrorHandler(TRUE);
+		$xpath = new \DOMXPath ( $doc );
+
+		/*
+		 * Du parent div ID = badgeos-achievements-container,
+		 * les enfants qui ont la classe badgeos-item-image
+		 * From http://stackoverflow.com/questions/11686287/php-xml-removing-element-and-all-children-according-to-node-value
+		*/
+		$q = '//div[@class="badgeos-item-image"]';
+		$thumbnailDiv = $xpath->query($q);
+		$parentNode = $thumbnailDiv->item(0)->parentNode;
+		$parentNode->removeChild($thumbnailDiv->item(0));
+
+		$q = '//div[@class="badgeos-item-description"]';
+		$descDiv = $xpath->query($q)->item(0);
+		$descDiv->setAttribute("style", "width:100%");
+		#$descDivCount = $descDiv->length;
+
+		$strReturn = $doc->saveHTML();
+		#$strReturn = $output;
+
+		/*
 		 * According to badgeos_parse_feedback_args
 		 * 'status'=> 'auto-approved' shows both approved & auto-approved
 		 */
@@ -187,7 +214,7 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 		$submissionID = $posts[0]->ID;
 
 		if(empty($submissionID)) {
-			return $output;
+			return $strReturn;
 		}
 
 		$linkURL = get_permalink($submissionID, false);
@@ -195,7 +222,8 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 		$divToAdd = "<!-- BEGIN Show detail link for ach # $achivementID, author # $displayedID, submission postID # $submissionID --><div>" . '<a href="' . $linkURL . '">' . translate('Show Details', 'badgeos') .'</a></div><!-- END Show detail link -->';
 
 		$htmlCommentMarker = '<!-- .badgeos-item-excerpt -->';
-		$strReturn = str_replace($htmlCommentMarker, $htmlCommentMarker . $divToAdd, $output);
+		$strReturn = str_replace($htmlCommentMarker, $htmlCommentMarker . $divToAdd, $strReturn);
+
 
 		return $strReturn;
     }
