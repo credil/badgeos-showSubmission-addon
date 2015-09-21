@@ -189,7 +189,7 @@ class BadgeosShowSub_Plugin extends BadgeosShowSub_LifeCycle {
 
 		$q = '//h2[@class="badgeos-item-title"]';
 		$descDiv = $xpath->query($q)->item(0);
-		$descDiv->setAttribute("style", "font-size:140%");
+		$descDiv->setAttribute("style", "font-size:140%;margin-bottom:0.5cm");
 
 		$strReturn = $doc->saveHTML();
 		#$strReturn = $output;
